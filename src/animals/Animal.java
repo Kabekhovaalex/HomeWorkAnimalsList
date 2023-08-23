@@ -1,3 +1,5 @@
+package animals;
+
 public abstract class Animal implements IAnimal {
     private String name;
     private int age;

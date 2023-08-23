@@ -1,3 +1,8 @@
+import animals.Animal;
+import animals.Fabrica;
+import data.AnimalData;
+import data.CommandsData;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -6,16 +11,16 @@ import java.util.Scanner;
 public class ListAnimals {
     public static void main(String[] args) {
         List<Animal> animals = new ArrayList<Animal>();
-        Animal el;
+       // animals.Animal el;
         String input = null;
         Scanner scanner = new Scanner(System.in);
 
-        while (input != "EXIT") {
+        while (true) {
             System.out.println("Введите команду add/list/exit");
             input = scanner.nextLine().trim().toUpperCase();
-            Commands commands;
+            CommandsData commands;
             try {
-                commands = Commands.valueOf(input);
+                commands = CommandsData.valueOf(input);
                 //IllegalArgumentException используется для того, чтобы избежать передачи некорректных значений аргументов.
             } catch (IllegalArgumentException e) {
                 System.out.println("Неверная команда! Попробуйте еще раз!");
@@ -24,8 +29,8 @@ public class ListAnimals {
             switch (commands) {
                 case ADD:
                     System.out.println("Введите животное cat/dog/duck");
-                    String type = scanner.nextLine().trim().toLowerCase();
-                    if (!type.equals("cat") && !type.equals("dog") && !type.equals("duck")) {
+                    String type = scanner.nextLine().trim().toUpperCase();
+                    if (!type.equals("CAT") && !type.equals("DOG") && !type.equals("DUCK")) {
                         System.out.println("Неверный тип животного! Попробуйте еще раз!");
                         break;
                     }
@@ -54,22 +59,18 @@ public class ListAnimals {
                     System.out.println("Введите цвет животного");
                     String color = scanner.nextLine().trim();
 
-                    switch (type) {
-                        case "cat":
-                            animals.add(new Cat(name,age,weight,color));
-                            new Cat(name, age, weight, color).say();
-                            break;
-                        case "dog":
-                            animals.add(new Dog(name,age,weight,color));
-                            new Dog(name,age,weight,color).say();
-                            break;
-                        case "duck":
-                            animals.add(new Duck(name,age,weight,color));
-                            new Duck(name,age,weight,color).say();
-                            break;
-                        default:
-                            System.out.println("Неверный тип животного.");
+                    AnimalData data;
+                    try {
+                         data = AnimalData.valueOf(type);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Неверный тип животного! Попробуйте еще раз!");
+                        continue;
                     }
+
+                    Animal el = new Fabrica(name, age, weight, color).created(data);
+                    animals.add(el);
+                    el.say();
+
                     break;
 
                 case LIST:
