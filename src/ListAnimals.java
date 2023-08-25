@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class ListAnimals {
     public static void main(String[] args) {
         List<Animal> animals = new ArrayList<Animal>();
-       // animals.Animal el;
         String input = null;
         Scanner scanner = new Scanner(System.in);
 
@@ -28,32 +27,49 @@ public class ListAnimals {
             }
             switch (commands) {
                 case ADD:
-                    System.out.println("Введите животное cat/dog/duck");
-                    String type = scanner.nextLine().trim().toUpperCase();
-                    if (!type.equals("CAT") && !type.equals("DOG") && !type.equals("DUCK")) {
-                        System.out.println("Неверный тип животного! Попробуйте еще раз!");
-                        break;
+                    String type;
+                    while (true) {
+                        System.out.println("Введите животное cat/dog/duck");
+                        type = scanner.nextLine().trim().toUpperCase();
+                        if (!type.equals("CAT") && !type.equals("DOG") && !type.equals("DUCK")) {
+                            System.out.println("Неверный тип животного! Попробуйте еще раз!");
+                        } else {
+                            break;
+                        }
                     }
 
                     System.out.println("Введите имя животного");
                     String name = scanner.nextLine().trim();
 
-                    System.out.println("Введите возраст животного");
-                    int age = 0;
-                    try {
-                        age = Integer.parseInt(scanner.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Неверно указан возраст. Попробуйте еще раз!");
-                        continue;
+
+                    int age;
+                    while (true) {
+                        try {
+                            System.out.println("Введите возраст животного");
+                            age = Integer.parseInt(scanner.nextLine());
+                            if (age < 0) {
+                                System.out.println("Неверно указан возраст. Пожалуйста, введите положительное число.");
+                            } else {
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Неверный ввод. Попробуйте еще раз!");
+                        }
                     }
 
-                    System.out.println("Введите вес животного");
-                    double  weight = 0;
-                    try {
-                        weight = Double.parseDouble(scanner.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Неверно указан вес. Попробуйте еще раз!");
-                        continue;
+                    double weight;
+                    while (true) {
+                        try {
+                            System.out.println("Введите вес животного");
+                            weight = Double.parseDouble(scanner.nextLine());
+                            if (weight < 0) {
+                                System.out.println("Неверный вес. Пожалуйста, введите положительное число.");
+                            } else {
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Неверный ввод. Попробуйте еще раз!");
+                        }
                     }
 
                     System.out.println("Введите цвет животного");
@@ -61,7 +77,7 @@ public class ListAnimals {
 
                     AnimalData data;
                     try {
-                         data = AnimalData.valueOf(type);
+                        data = AnimalData.valueOf(type);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Неверный тип животного! Попробуйте еще раз!");
                         continue;
@@ -80,7 +96,8 @@ public class ListAnimals {
                         for (Animal a : animals) {
                             System.out.println(a.toString());
                         }
-                    }  break;
+                    }
+                    break;
 
                 case EXIT:
                     scanner.close();
